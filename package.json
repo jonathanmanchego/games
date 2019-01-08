@@ -1,0 +1,21 @@
+{
+  "name": "juegos-web",
+  "version": "0.0.1",
+  "description": "Juegos separados en carpetas especificando los elementos a usar y bien organizado.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon indes.js"
+  },
+  "author": "Manchego Sosa Jonathan",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "pug": "^2.0.3",
+    "socket.io": "^2.2.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.9"
+  }
+}

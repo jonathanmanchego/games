@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        meta(http-equiv="X-UA-Compatible", content="ie=edge")
+        link(rel="shortcut icon", href="../img/iconos/index.ico", type="image/x-icon")
+        include partials/head.pug
+        title LISTADO JUEGOS
+    body
+        .contGnrl
+            - var tGames = ['AJEDREZ','TRIVIA'];
+            for ga,i in tGames
+                .game
+                    img(src="img/"+ga.toLowerCase()+".png", alt=ga)
+                    a(href="juegos/"+ga.toLowerCase())=ga
