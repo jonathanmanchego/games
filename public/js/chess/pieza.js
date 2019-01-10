@@ -7,7 +7,7 @@ class Pieza{
         this.y = i;
     }
     get mostrar(){
-        let html = '<img id="'+this.y+'-'+this.x+'" src="../img/'+this.color+'/'+this.nombre+'.png" draggable="true" ondragstart="drag(event)" />';
+        let html = '<div id="' + this.y + '-' + this.x + '" class="pieza" draggable="true" ondragstart="drag(event)" style="background-image: url(../img/' + this.color + '/' + this.nombre + '.png)" ></div>';
         return html;
     }
 }
