@@ -19,7 +19,7 @@ class Tablero{
                     fila[j] = new Pieza(piezas[i == 0 || i == 7 ? j : 8], colorPiezas[colP],i,j);
                 }
                 if(fila[j] != undefined){
-                    celda+= fila[j].mostrar;
+                    celda+= fila[j].mostrar();
 
                 }
                 celda+='</div>';
