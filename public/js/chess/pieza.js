@@ -10,4 +10,8 @@ class Pieza{
         let html = '<div id="' + this.y + '-' + this.x + '" class="pieza" draggable="true" ondragstart="drag(event)" style="background-image: url(../img/' + this.color + '/' + this.nombre + '.png)" ></div>';
         return html;
     }
+    mover(n_x,n_y){
+        this.x = n_x;
+        this.y = n_y;
+    }
 }
