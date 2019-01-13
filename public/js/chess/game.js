@@ -10,16 +10,20 @@ var listMovimientos = [
     /*reina */[1,1,1,1,1,1,1,1,0],
     /*peon */[1,0,1,0,1,1,1,1,0]
 ];
+
+//eleMover.src = '../img/elementos/desplazamiento.svg';
 //INICIALIZANDO //
 function init(){
     var tab = new Tablero(TAM);
     tablaChess.innerHTML = tab.paint();    
     //console.log(tabPos);
+
+
 }
 //FUNCIONES DE OPERACIONES
 function drag(e){
     e.dataTransfer.setData('text',e.target.id);
-    console.log(e.target.id);
+    //console.log(e.target.id);
     //e.dataTransfer.setData("text",e.target)
 }
 function allowDrop(e){
@@ -27,7 +31,7 @@ function allowDrop(e){
     //console.log(e);
 }
 function drop(e){
-    e.preventDefault();    
+    e.preventDefault();        
     var nombrePieza = e.dataTransfer.getData('text');
     var piezaLevantada = document.getElementById(nombrePieza);
     ///VARIABLES DE POSICION ORIGINAL
@@ -36,14 +40,30 @@ function drop(e){
     //VARIABLES DE POSICION FINAL
     let posX = parseInt(e.target.id.substring(2, 3));
     let posY = parseInt(e.target.id.substring(0, 1));
+    ///CALCULAMOS LA DISTANCIA 
+    let opX = Math.abs(posX - posiX);
+    let opY = Math.abs(posY - posiY);
+    let dis = Math.floor(Math.sqrt(Math.pow(opX,2)+Math.pow(opY,2)));
+    console.log("distancia desplazada",dis);
     ////VERIFICAMOS QUE TIPO DE PIEZA ES LA QUE SE ESTA MOVIENDO
     let piezaEnMovimiento = verificarPieza(tabPos[posiY][posiX].nombre);
     //////VERIFICAMOS QUE MOVIMIENTO A REALIZADO LA PIEZA
     let tipoMovimiento = verificarMovimiento(posiX,posiY,posX,posY);
     
     let m_c = listMovimientos[piezaEnMovimiento][tipoMovimiento];
+    ///VALIDACION DE MOVIMIENTO
+    let valMov = false;
+    if(m_c){
+        valMov = validarMovimiento(tabPos[posiY][posiX],tipoMovimiento,dis);
+    }else{
+        console.log("Movimiento Invalido");
+    }
     console.log('El movimiento es ', m_c?'valido':'invalido');
-    if(e.target.appendChild(piezaLevantada)){
+    
+    
+    ///MOVIENDO LA PIEZA
+    if(valMov){
+        e.target.appendChild(piezaLevantada);
         piezaLevantada.id = posY + "-" + posX;
         piezaLevantada.style.cursor = 'grab';
         tabPos[posY][posX] = tabPos[posiY][posiX];
@@ -52,6 +72,8 @@ function drop(e){
     }
     console.log(tabPos[posY][posX]);
 }
+
+//FUNCIONES DE TRATAMIENTO
 function verificarMovimiento(ix,iy,x,y){
     let opX = Math.abs(x - ix);
     let opY = Math.abs(y - iy);
@@ -109,6 +131,25 @@ function verificarPieza(name){
         default:
             ans = 6;
             break;
+    }
+    return ans;
+}
+function validarMovimiento(pieza,move,dis) {
+    let x_l_m = verificarPieza(pieza.nombre);
+    let ans = true;
+    if(x_l_m == 3){
+        if (dis == 1){
+            ans = true;
+        }else {
+            ans = false;
+        }
+    }
+    if(x_l_m == 5){
+        if(dis == 1){
+            ans = true;
+        }else if(dis == 2){
+            ans = pieza.movs == 0?true:false;
+        }
     }
     return ans;
 }

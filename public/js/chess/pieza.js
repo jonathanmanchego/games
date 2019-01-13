@@ -13,5 +13,6 @@ class Pieza{
     mover(n_x,n_y){
         this.x = n_x;
         this.y = n_y;
+        this.movs++;
     }
 }
