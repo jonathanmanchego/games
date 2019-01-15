@@ -32,6 +32,7 @@ function allowDrop(e){
 }
 function drop(e){
     e.preventDefault();        
+    console.log(e);
     var nombrePieza = e.dataTransfer.getData('text');
     var piezaLevantada = document.getElementById(nombrePieza);
     ///VARIABLES DE POSICION ORIGINAL
@@ -44,7 +45,7 @@ function drop(e){
     let opX = Math.abs(posX - posiX);
     let opY = Math.abs(posY - posiY);
     let dis = Math.floor(Math.sqrt(Math.pow(opX,2)+Math.pow(opY,2)));
-    console.log("distancia desplazada",dis);
+    //console.log("distancia desplazada",dis);
     ////VERIFICAMOS QUE TIPO DE PIEZA ES LA QUE SE ESTA MOVIENDO
     let piezaEnMovimiento = verificarPieza(tabPos[posiY][posiX].nombre);
     //////VERIFICAMOS QUE MOVIMIENTO A REALIZADO LA PIEZA
@@ -54,23 +55,30 @@ function drop(e){
     ///VALIDACION DE MOVIMIENTO
     let valMov = false;
     if(m_c){
-        valMov = validarMovimiento(tabPos[posiY][posiX],tipoMovimiento,dis);
+        valMov = validarMovimiento(tabPos[posiY][posiX],tipoMovimiento,dis,e.target.getAttribute('class').substring(0,5));
     }else{
         console.log("Movimiento Invalido");
     }
-    console.log('El movimiento es ', m_c?'valido':'invalido');
+    //console.log('El movimiento es ', m_c?'valido':'invalido');
+    ///VERIFICAMOS LA POSICION FINAL
     
-    
+    //e.target.getAttribute('class').substring(0,5);
     ///MOVIENDO LA PIEZA
     if(valMov){
-        e.target.appendChild(piezaLevantada);
+        ////SI EN CASO HUBIESE UNA PIEZA DENTRO REMOVERLA
+        if (e.target.getAttribute('class').substring(0, 5) == 'celda'){
+            e.target.appendChild(piezaLevantada);
+        }else if (e.target.getAttribute('class').substring(0, 5) == 'pieza'){
+            document.getElementById(posY + "_" + posX).removeChild(e.target);
+            document.getElementById(posY + "_" + posX).appendChild(piezaLevantada);
+        }
         piezaLevantada.id = posY + "-" + posX;
         piezaLevantada.style.cursor = 'grab';
         tabPos[posY][posX] = tabPos[posiY][posiX];
         tabPos[posiY][posiX] = undefined;
-        tabPos[posY][posX].mover(posX,posY);
+        tabPos[posY][posX].mover(posX, posY);
     }
-    console.log(tabPos[posY][posX]);
+    //console.log(tabPos[posY][posX]);
 }
 
 //FUNCIONES DE TRATAMIENTO
@@ -134,7 +142,7 @@ function verificarPieza(name){
     }
     return ans;
 }
-function validarMovimiento(pieza,move,dis) {
+function validarMovimiento(pieza,move,dis,target) {
     let x_l_m = verificarPieza(pieza.nombre);
     let ans = true;
     if(x_l_m == 3){
@@ -145,10 +153,56 @@ function validarMovimiento(pieza,move,dis) {
         }
     }
     if(x_l_m == 5){
-        if(dis == 1){
-            ans = true;
-        }else if(dis == 2){
-            ans = pieza.movs == 0?true:false;
+        if(target == 'celda'){
+            if(dis == 1){
+                if(pieza.color == 'blanco'){
+                    if(move == 0){
+                        ans = true;
+                    }else{
+                        ans = false;
+                    }
+                }else{
+                    if (move == 2) {
+                        ans = true;
+                    }else{
+                        ans = false;
+                    }
+                }
+            }else if(dis == 2){
+                if (pieza.color == 'blanco') {
+                    if (move == 0 && pieza.movs == 0) {
+                        ans = true;
+                    }else{
+                        ans = false;
+                    }
+                } else {
+                    if (move == 2 && pieza.movs == 0) {
+                        ans = true;
+                    }else{
+                        ans = false;
+                    }
+                }
+            }else{
+                ans = false;
+            }
+        }else{
+            if(dis == 1){
+                if(pieza.color == 'blanco'){
+                    if(move == 4 || move == 5){
+                        ans = true;
+                    }else{
+                        ans = false;
+                    }
+                }else{
+                    if(move == 6 || move == 7){
+                        ans = true;
+                    }else{
+                        ans = false;
+                    }
+                }
+            }else{
+                ans = false;
+            }
         }
     }
     return ans;
