@@ -9,7 +9,17 @@ html(lang="en")
         title=titulo
     body(onload="init()")
         .contGame
-            #tab.tabChess
+            .tablero
+                .space
+                -var lettters = ['A','B','C','D','E','F','G','H'];
+                for lt in lettters 
+                    .campo(class=lt)
+                        span=lt
+                -var n = 1;
+                while n < 9
+                    .campo(class="n_"+n)
+                        span=n++
+                #tab.tabChess
         script(src="../js/chess/pieza.js")
         script(src="../js/chess/tablero.js")
         script(src="../js/chess/game.js")

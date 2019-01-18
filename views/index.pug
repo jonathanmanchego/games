@@ -10,7 +10,7 @@ html(lang="en")
     body
         .contGnrl
             - var tGames = ['AJEDREZ','TRIVIA'];
-            for ga,i in tGames
+            for ga in tGames
                 .game
                     img(src="img/"+ga.toLowerCase()+".png", alt=ga)
                     a(href="juegos/"+ga.toLowerCase())=ga
