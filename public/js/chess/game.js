@@ -98,6 +98,9 @@ function verificarMovimiento(ix,iy,x,y){
         }else{
             ans = 0;//'ARRIBA';
         }
+    } else if ((opX == 2 && opY == 1) || (opX == 1 && opY == 2 )){
+        //MOVIMIENTO EN L DEL CABALLO
+        ans = 8;
     }else{//DIAGONALES
         if(ix < x){//MITAD DERECHA
             if(iy < y){//ABAJO
@@ -141,7 +144,7 @@ function verificarPieza(name){
             break;
     }
     return ans;
-}
+} 
 function validarMovimiento(pieza,move,dis,target) {
     let x_l_m = verificarPieza(pieza.nombre);
     let ans = true;
